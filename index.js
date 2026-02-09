@@ -9,6 +9,8 @@ import db from './models/index.js';
 import authRoutes from './routes/auth.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import { errorHandler, notFoundHandler } from './middlewares/error.middleware.js';
+import swaggerUi from 'swagger-ui-express';
+import { specs } from './config/swagger.js';
 
 const app = express();
 
@@ -23,6 +25,9 @@ if (process.env.NODE_ENV === 'development') {
 
 // Body parser
 app.use(express.json());
+
+// Swagger API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routes
 app.use('/auth', authRoutes);
