@@ -1,0 +1,29 @@
+# Secrets
+.env
+.env.local
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+postgres_data/
+*.sqlite3
+
+# Testing
+coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# Build
+dist/
+build/

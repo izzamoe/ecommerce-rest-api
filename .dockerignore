@@ -1,0 +1,10 @@
+node_modules/
+.env
+postgres_data/
+postgres_data.bak/
+*.log
+.DS_Store
+migrations/
+seeders/
+.sequelizerc
+postgres_data*
