@@ -243,3 +243,42 @@ project/
 ├── index.js         # Entry point
 └── package.json
 ```
+
+## Docker Deployment
+
+### Development
+
+```bash
+docker-compose up -d
+```
+
+Akses: http://localhost:3000
+
+### Production
+
+1. Buat file `.env.production`:
+```env
+DB_NAME=app_db
+DB_USER=postgres
+DB_PASSWORD=secure-password-here
+JWT_SECRET=very-long-random-secret-key
+```
+
+2. Jalankan production stack:
+```bash
+docker-compose -f docker-compose.prod.yml up -d --build
+```
+
+3. Jalankan migrations:
+```bash
+docker-compose -f docker-compose.prod.yml exec app npm run migrate
+docker-compose -f docker-compose.prod.yml exec app npm run seed
+```
+
+### Production Features
+
+- Multi-stage build (smaller image)
+- Non-root user for security
+- Health checks
+- Auto-restart policies
+- No development volumes mounted
