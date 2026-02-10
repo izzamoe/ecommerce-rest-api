@@ -40,6 +40,37 @@ npm start
 
 Server berjalan di `http://localhost:3000`.
 
+## Swagger API Documentation
+
+API ini dilengkapi dengan dokumentasi interaktif menggunakan Swagger UI. Anda dapat mengaksesnya di:
+
+```
+http://localhost:3000/api-docs
+```
+
+### Cara Menggunakan Swagger UI
+
+1. Jalankan aplikasi: `npm start`
+2. Buka browser dan akses `http://localhost:3000/api-docs`
+3. Klik pada endpoint yang ingin Anda test
+4. Klik tombol **Try it out**
+5. Masukkan parameter/request body yang diperlukan
+6. Klik **Execute** untuk menjalankan request
+
+### Autentikasi di Swagger UI
+
+1. Klik tombol **Authorize** di bagian atas
+2. Masukkan JWT token yang didapat dari endpoint `/auth/login`
+3. Klik **Authorize** - token akan自动 terpasang di semua request
+
+### Contoh Alur Testing
+
+1. **Login** → POST `/auth/login` dengan email `admin@example.com` dan password `admin123`
+2. **Authorize** dengan access_token yang didapat
+3. **Create Order** → POST `/orders` (ADMIN only)
+4. **Get Orders** → GET `/orders`
+5. **Update Status** → PATCH `/orders/{id}/status` (ADMIN only)
+
 ## Demo Users
 
 - **ADMIN**: admin@example.com / admin123
