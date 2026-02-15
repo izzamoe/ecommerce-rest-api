@@ -46,7 +46,7 @@ export const authenticate = asyncHandler(async (req, res, next) => {
   next();
 });
 
-export const requireRole = (...allowedRoles) => {
+const checkRole = (...allowedRoles) => {
   return asyncHandler(async (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({
@@ -68,5 +68,5 @@ export const requireRole = (...allowedRoles) => {
   });
 };
 
-export const requireAdmin = requireRole('ADMIN');
-export const requireStaffOrAdmin = requireRole('ADMIN', 'STAFF');
+export const requireAdmin = checkRole('ADMIN');
+export const requireStaffOrAdmin = checkRole('ADMIN', 'STAFF');

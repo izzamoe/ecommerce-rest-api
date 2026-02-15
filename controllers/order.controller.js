@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import db from '../models/index.js';
 import { asyncHandler } from '../middlewares/error.middleware.js';
+import { OrderStatus, OrderStatusList } from '../constants/order.js';
 
 const { Order } = db;
 
@@ -22,9 +23,9 @@ const createOrderSchema = Joi.object({
 });
 
 const updateStatusSchema = Joi.object({
-  status: Joi.string().valid('PENDING', 'PAID', 'CANCELLED').required().messages({
+  status: Joi.string().valid(...OrderStatusList).required().messages({
     'any.required': 'status is required',
-    'any.only': 'status must be one of: PENDING, PAID, CANCELLED'
+    'any.only': `status must be one of: ${OrderStatusList.join(', ')}`
   })
 });
 
@@ -52,7 +53,7 @@ export const createOrder = asyncHandler(async (req, res) => {
     customerName: value.customer_name,
     productName: value.product_name,
     quantity: value.quantity,
-    status: 'PENDING'
+    status: OrderStatus.PENDING
   });
 
   res.status(201).json(formatOrder(order));

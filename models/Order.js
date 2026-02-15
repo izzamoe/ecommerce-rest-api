@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import { OrderStatus, ValidStatusTransitions } from '../constants/order.js';
 
 export default (sequelize) => {
   const Order = sequelize.define('Order', {
@@ -25,9 +26,9 @@ export default (sequelize) => {
       }
     },
     status: {
-      type: DataTypes.ENUM('PENDING', 'PAID', 'CANCELLED'),
+      type: DataTypes.ENUM(...Object.values(OrderStatus)),
       allowNull: false,
-      defaultValue: 'PENDING'
+      defaultValue: OrderStatus.PENDING
     }
   }, {
     tableName: 'orders',
@@ -38,13 +39,7 @@ export default (sequelize) => {
   });
 
   Order.prototype.canTransitionTo = function(newStatus) {
-    const validTransitions = {
-      'PENDING': ['PAID', 'CANCELLED'],
-      'PAID': [],
-      'CANCELLED': []
-    };
-
-    return validTransitions[this.status]?.includes(newStatus) || false;
+    return ValidStatusTransitions[this.status]?.includes(newStatus) || false;
   };
 
   return Order;

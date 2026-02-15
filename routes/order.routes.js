@@ -6,7 +6,8 @@ import {
 } from '../controllers/order.controller.js';
 import {
   authenticate,
-  requireRole
+  requireAdmin,
+  requireStaffOrAdmin
 } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
@@ -63,7 +64,7 @@ router.use(authenticate);
  */
 // POST /orders - Create order (ADMIN only)
 router.post('/',
-  requireRole('ADMIN'),
+  requireAdmin,
   createOrder
 );
 
@@ -99,7 +100,7 @@ router.post('/',
  */
 // GET /orders - Get all orders (ADMIN and STAFF)
 router.get('/',
-  requireRole('ADMIN', 'STAFF'),
+  requireStaffOrAdmin,
   getAllOrders
 );
 
@@ -159,7 +160,7 @@ router.get('/',
  */
 // PATCH /orders/:id/status - Update order status (ADMIN only)
 router.patch('/:id/status',
-  requireRole('ADMIN'),
+  requireAdmin,
   updateOrderStatus
 );
 

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
+import { OrderStatus } from '../constants/order.js';
 
 // Set test environment
 process.env.NODE_ENV = 'test';
@@ -197,7 +198,7 @@ describe('Authorization', () => {
     const res = await request(app)
       .patch(`/orders/${orderId}/status`)
       .set('Authorization', `Bearer ${staffToken}`)
-      .send({ status: 'PAID' });
+      .send({ status: OrderStatus.PAID });
 
     expect(res.status).toBe(403);
     expect(res.body.statusCode).toBe(403);
@@ -223,7 +224,7 @@ describe('POST /orders', () => {
     expect(res.body.customer_name).toBe('John Doe');
     expect(res.body.product_name).toBe('Laptop Gaming');
     expect(res.body.quantity).toBe(2);
-    expect(res.body.status).toBe('PENDING');
+    expect(res.body.status).toBe(OrderStatus.PENDING);
     expect(res.body).toHaveProperty('created_at');
   });
 
@@ -366,11 +367,11 @@ describe('PATCH /orders/:id/status', () => {
     const res = await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'PAID' });
+      .send({ status: OrderStatus.PAID });
 
     expect(res.status).toBe(200);
     expect(res.body.id).toBe(pendingOrderId);
-    expect(res.body.status).toBe('PAID');
+    expect(res.body.status).toBe(OrderStatus.PAID);
     expect(res.body).toHaveProperty('customer_name');
     expect(res.body).toHaveProperty('product_name');
     expect(res.body).toHaveProperty('quantity');
@@ -381,10 +382,10 @@ describe('PATCH /orders/:id/status', () => {
     const res = await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'CANCELLED' });
+      .send({ status: OrderStatus.CANCELLED });
 
     expect(res.status).toBe(200);
-    expect(res.body.status).toBe('CANCELLED');
+    expect(res.body.status).toBe(OrderStatus.CANCELLED);
   });
 
   it('should NOT allow PAID to CANCELLED', async () => {
@@ -392,13 +393,13 @@ describe('PATCH /orders/:id/status', () => {
     await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'PAID' });
+      .send({ status: OrderStatus.PAID });
 
     // Try to set to CANCELLED
     const res = await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'CANCELLED' });
+      .send({ status: OrderStatus.CANCELLED });
 
     expect(res.status).toBe(400);
     expect(res.body.statusCode).toBe(400);
@@ -410,13 +411,13 @@ describe('PATCH /orders/:id/status', () => {
     await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'PAID' });
+      .send({ status: OrderStatus.PAID });
 
     // Try to set to PENDING
     const res = await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'PENDING' });
+      .send({ status: OrderStatus.PENDING });
 
     expect(res.status).toBe(400);
     expect(res.body.statusCode).toBe(400);
@@ -427,13 +428,13 @@ describe('PATCH /orders/:id/status', () => {
     await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'CANCELLED' });
+      .send({ status: OrderStatus.CANCELLED });
 
     // Try to set to PAID
     const res = await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'PAID' });
+      .send({ status: OrderStatus.PAID });
 
     expect(res.status).toBe(400);
     expect(res.body.statusCode).toBe(400);
@@ -444,13 +445,13 @@ describe('PATCH /orders/:id/status', () => {
     await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'CANCELLED' });
+      .send({ status: OrderStatus.CANCELLED });
 
     // Try to set to PENDING
     const res = await request(app)
       .patch(`/orders/${pendingOrderId}/status`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'PENDING' });
+      .send({ status: OrderStatus.PENDING });
 
     expect(res.status).toBe(400);
     expect(res.body.statusCode).toBe(400);
@@ -460,7 +461,7 @@ describe('PATCH /orders/:id/status', () => {
     const res = await request(app)
       .patch('/orders/00000000-0000-0000-0000-000000000000/status')
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ status: 'PAID' });
+      .send({ status: OrderStatus.PAID });
 
     expect(res.status).toBe(404);
     expect(res.body.statusCode).toBe(404);

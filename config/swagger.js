@@ -1,4 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import { OrderStatus, OrderStatusList } from '../constants/order.js';
 
 const options = {
   definition: {
@@ -49,7 +50,7 @@ const options = {
             customer_name: { type: 'string', example: 'John Doe' },
             product_name: { type: 'string', example: 'Laptop Gaming' },
             quantity: { type: 'integer', example: 2 },
-            status: { type: 'string', enum: ['PENDING', 'PAID', 'CANCELLED'], example: 'PENDING' },
+            status: { type: 'string', enum: OrderStatusList, example: OrderStatus.PENDING },
             created_at: { type: 'string', format: 'date-time', example: '2024-02-10T10:30:00Z' }
           }
         },
@@ -74,7 +75,7 @@ const options = {
           type: 'object',
           required: ['status'],
           properties: {
-            status: { type: 'string', enum: ['PENDING', 'PAID', 'CANCELLED'], example: 'PAID' }
+            status: { type: 'string', enum: OrderStatusList, example: OrderStatus.PAID }
           }
         }
       }
