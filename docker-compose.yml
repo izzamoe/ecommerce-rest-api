@@ -19,8 +19,14 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - .:/app
-      - /app/node_modules
+      - ./index.js:/app/index.js
+      - ./controllers:/app/controllers
+      - ./routes:/app/routes
+      - ./models:/app/models
+      - ./middlewares:/app/middlewares
+      - ./constants:/app/constants
+      - ./config:/app/config
+      - ./.env:/app/.env
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       interval: 30s

@@ -2,8 +2,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install nodemon for hot-reload
-RUN npm install -g nodemon
+# Install build tools for bcrypt and nodemon for hot-reload
+RUN apk add --no-cache python3 make g++ \
+    && npm install -g nodemon
 
 COPY package*.json ./
 
